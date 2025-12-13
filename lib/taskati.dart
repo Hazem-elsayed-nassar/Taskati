@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taskati/screens/splash_screen.dart';
 
 class Taskati extends  StatelessWidget {
   const Taskati({super.key}) ;
@@ -6,15 +7,8 @@ class Taskati extends  StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Taskati',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const Scaffold(
-        body: Center(
-          child: Text('Welcome to Taskati!'),
-        ),
-      ),
+     
+      home:SplashScreen(),
     );
   }
 }
