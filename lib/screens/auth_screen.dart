@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:taskati/widgets/app_button.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,24 +14,44 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   final ImagePicker picker = ImagePicker();
   XFile? photo;
-  pickimageFromCamera() async {
+
+  void pickimageFromCamera() async {
     photo = await picker.pickImage(source: ImageSource.camera);
+    setState(() {});
+  }
+
+  void pickimageFromGallery() async {
+    photo = await picker.pickImage(source: ImageSource.gallery);
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircleAvatar(
-                radius: 100,
-                backgroundColor: Colors.black,
-                child: Icon(Icons.person, size: 150, color: Colors.deepPurple),
+              Visibility(
+                visible: photo == null,
+                replacement: CircleAvatar(
+                  radius: 100,
+                  backgroundColor: Colors.black,
+                  backgroundImage: Image.file(File(photo?.path ?? '')).image,
+                ),
+                child: CircleAvatar(
+                  radius: 100,
+                  backgroundColor: Colors.black,
+                  child: Icon(
+                    Icons.person,
+                    size: 150,
+                    color: Colors.deepPurple,
+                  ),
+                ),
               ),
+
               SizedBox(height: 30),
               AppButton(
                 title: 'Upload From Camera ',
@@ -38,7 +60,12 @@ class _AuthScreenState extends State<AuthScreen> {
                 },
               ),
               SizedBox(height: 20),
-              AppButton(title: 'Uploadd From Gallery', onPressed: () {}),
+              AppButton(
+                title: 'Uploadd From Gallery',
+                onPressed: () {
+                  pickimageFromGallery();
+                },
+              ),
             ],
           ),
         ),
