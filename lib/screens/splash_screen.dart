@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:taskati/screens/outh_screen.dart';
+import 'package:taskati/screens/auth_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -47,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
      void nextScreen() {
       Future.delayed(Duration(seconds: 5), () {
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => OuthScreen())
+            MaterialPageRoute(builder: (context) => AuthScreen())
         );
       });
     }
