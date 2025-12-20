@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:taskati/screens/home_screen.dart';
 import 'package:taskati/widgets/app_button.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -66,6 +68,29 @@ class _AuthScreenState extends State<AuthScreen> {
                   pickimageFromGallery();
                 },
               ),
+              SizedBox(height: 20),
+              Divider(thickness: 2),
+              SizedBox(height: 20),
+              TextFormField(
+                onTapOutside: (event) {
+                  FocusScope.of(context).unfocus();
+                },
+                decoration: InputDecoration(
+                  labelText: 'Enter Your Name',
+                  border: OutlineInputBorder(
+                     borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.deepPurple),
+                  ),
+                ),
+              ),
+             SizedBox(height: 30),
+              AppButton(
+                title: 'Submit',
+                onPressed: () {
+                  Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder:(c)=>HomeScreen()) ,(e) => false);
+                },
+              ),
+
             ],
           ),
         ),
