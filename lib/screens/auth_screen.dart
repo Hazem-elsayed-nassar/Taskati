@@ -15,6 +15,7 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   final ImagePicker picker = ImagePicker();
   XFile? photo;
+  final TextEditingController nameController = TextEditingController();
 
   void pickimageFromCamera() async {
     photo = await picker.pickImage(source: ImageSource.camera);
@@ -71,25 +72,36 @@ class _AuthScreenState extends State<AuthScreen> {
               Divider(thickness: 2),
               SizedBox(height: 20),
               TextFormField(
+                controller: nameController,
                 onTapOutside: (event) {
                   FocusScope.of(context).unfocus();
                 },
                 decoration: InputDecoration(
                   labelText: 'Enter Your Name',
                   border: OutlineInputBorder(
-                     borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: Colors.deepPurple),
                   ),
                 ),
               ),
-             SizedBox(height: 30),
+              SizedBox(height: 30),
               AppButton(
                 title: 'Submit',
                 onPressed: () {
-                  Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder:(c)=>HomeScreen()) ,(e) => false);
+                  if (photo != null && nameController.text.isNotEmpty) {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (c) => HomeScreen(
+                          userName: nameController.text,
+                          userImage: File(photo!.path),
+                        ),
+                      ),
+                      (e) => false,
+                    );
+                  }
                 },
               ),
-
             ],
           ),
         ),
