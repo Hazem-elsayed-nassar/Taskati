@@ -77,7 +77,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const SizedBox(height: 4),
-            const Text("Have A Nice Day", style: TextStyle(fontSize: 14, color: Colors.grey)),
+            const Text(
+              "Have A Nice Day",
+              style: TextStyle(fontSize: 14, color: Colors.grey),
+            ),
           ],
         ),
         CircleAvatar(radius: 26, backgroundImage: FileImage(widget.userImage)),
@@ -92,8 +95,18 @@ class _HomeScreenState extends State<HomeScreen> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(DateFormat.yMMMMd().format(DateTime.now()), style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey)),
-            const Text("Today", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text(
+              DateFormat.yMMMMd().format(DateTime.now()),
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey,
+              ),
+            ),
+            const Text(
+              "Today",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
           ],
         ),
         ElevatedButton(
@@ -112,9 +125,14 @@ class _HomeScreenState extends State<HomeScreen> {
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFF4e5ae8),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
-          child: const Text("+ Add Task", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          child: const Text(
+            "+ Add Task",
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
         ),
       ],
     );
@@ -133,15 +151,36 @@ class _HomeScreenState extends State<HomeScreen> {
             width: 70,
             margin: const EdgeInsets.only(right: 12),
             decoration: BoxDecoration(
-              color: isSelected ? const Color(0xFF4e5ae8) : Colors.grey.shade100,
+              color: isSelected
+                  ? const Color(0xFF4e5ae8)
+                  : Colors.grey.shade100,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(DateFormat.MMM().format(date), style: TextStyle(color: isSelected ? Colors.white : Colors.grey, fontSize: 12)),
-                Text(DateFormat.d().format(date), style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: isSelected ? Colors.white : Colors.black)),
-                Text(DateFormat.E().format(date), style: TextStyle(color: isSelected ? Colors.white : Colors.grey, fontSize: 12)),
+                Text(
+                  DateFormat.MMM().format(date),
+                  style: TextStyle(
+                    color: isSelected ? Colors.white : Colors.grey,
+                    fontSize: 12,
+                  ),
+                ),
+                Text(
+                  DateFormat.d().format(date),
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: isSelected ? Colors.white : Colors.black,
+                  ),
+                ),
+                Text(
+                  DateFormat.E().format(date),
+                  style: TextStyle(
+                    color: isSelected ? Colors.white : Colors.grey,
+                    fontSize: 12,
+                  ),
+                ),
               ],
             ),
           );
@@ -155,33 +194,145 @@ class _HomeScreenState extends State<HomeScreen> {
       itemCount: tasks.length,
       itemBuilder: (context, index) {
         final task = tasks[index];
-        return Container(
-          margin: const EdgeInsets.only(bottom: 12),
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(color: task.color, borderRadius: BorderRadius.circular(16)),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(task.title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        const Icon(Icons.access_time_rounded, color: Colors.white70, size: 18),
-                        const SizedBox(width: 4),
-                        Text("${task.startTime} - ${task.endTime}", style: const TextStyle(color: Colors.white70, fontSize: 12)),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Text(task.description, style: const TextStyle(color: Colors.white, fontSize: 14)),
-                  ],
+        return Dismissible(
+          key: UniqueKey(),
+          background: Container(
+            margin: const EdgeInsets.only(bottom: 12),
+            padding: const EdgeInsets.only(left: 20),
+            alignment: Alignment.centerLeft,
+            decoration: BoxDecoration(
+              color: Colors.green,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: const Row(
+              children: [
+                Icon(Icons.check_circle, color: Colors.white),
+                SizedBox(width: 8),
+                Text(
+                  "Complete",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              Container(margin: const EdgeInsets.symmetric(horizontal: 10), height: 60, width: 0.5, color: Colors.white60),
-              const RotatedBox(quarterTurns: 3, child: Text("TODO", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 10))),
-            ],
+              ],
+            ),
+          ),
+          secondaryBackground: Container(
+            margin: const EdgeInsets.only(bottom: 12),
+            padding: const EdgeInsets.only(right: 20),
+            alignment: Alignment.centerRight,
+            decoration: BoxDecoration(
+              color: Colors.red,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  "Delete",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(width: 8),
+                Icon(Icons.delete, color: Colors.white),
+              ],
+            ),
+          ),
+          onDismissed: (direction) {
+            if (direction == DismissDirection.startToEnd) {
+              setState(() {
+                tasks.removeAt(index);
+              });
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Task Completed!"),
+                  backgroundColor: Colors.green,
+                ),
+              );
+            } else {
+              setState(() {
+                tasks.removeAt(index);
+              });
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Task Deleted"),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
+          },
+          child: Container(
+            margin: const EdgeInsets.only(bottom: 12),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: task.color,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        task.title,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.access_time_rounded,
+                            color: Colors.white70,
+                            size: 18,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            "${task.startTime} - ${task.endTime}",
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        task.description,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  height: 60,
+                  width: 0.5,
+                  color: Colors.white60,
+                ),
+                const RotatedBox(
+                  quarterTurns: 3,
+                  child: Text(
+                    "TODO",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 10,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -195,7 +346,10 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           const Icon(Icons.task_outlined, size: 80, color: Colors.grey),
           const SizedBox(height: 16),
-          const Text("You do not have any tasks yet!", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const Text(
+            "You do not have any tasks yet!",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
         ],
       ),
     );
