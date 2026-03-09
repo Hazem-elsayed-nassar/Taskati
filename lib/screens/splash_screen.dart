@@ -44,13 +44,14 @@ class _SplashScreenState extends State<SplashScreen> {
       ),
     );
     }
-     void nextScreen() {
-      Future.delayed(Duration(seconds: 5), () {
-        // ignore: use_build_context_synchronously
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => AuthScreen())
-        );
-      });
-    }
+  void nextScreen() {
+    Future.delayed(const Duration(seconds: 5), () {
+      if (!mounted) return;
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const AuthScreen()),
+      );
+    });
   }
+}
 

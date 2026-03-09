@@ -20,6 +20,13 @@ class _AddTaskState extends State<AddTask> {
   int _selectedColor = 0;
 
   @override
+  void dispose() {
+    _titleController.dispose();
+    _noteController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -238,6 +245,7 @@ class _AddTaskState extends State<AddTask> {
       context: context,
       initialTime: TimeOfDay.now(),
     );
+    if (!mounted) return;
     if (picker != null) {
       String formattedTime = picker.format(context);
       setState(() {

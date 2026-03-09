@@ -17,6 +17,12 @@ class _AuthScreenState extends State<AuthScreen> {
   XFile? photo;
   final TextEditingController nameController = TextEditingController();
 
+  @override
+  void dispose() {
+    nameController.dispose();
+    super.dispose();
+  }
+
   void pickimageFromCamera() async {
     photo = await picker.pickImage(source: ImageSource.camera);
     setState(() {});
